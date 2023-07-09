@@ -28,7 +28,11 @@ const Commands = () => {
 				<li>
 					<pre>
 						{`-`} Environment Variables:{" "}
-						<code>REACT_APP_URL=http://localhost/3000</code>
+						<code>REACT_APP_TITLE=Create React App</code>
+					</pre>
+					<pre>
+						{`-`} Environment Variables:{" "}
+						<code>process.env.REACT_APP_TITLE</code>
 					</pre>
 				</li>
 				<li>

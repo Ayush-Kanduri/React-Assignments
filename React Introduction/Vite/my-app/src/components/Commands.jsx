@@ -1,4 +1,5 @@
 const Commands = () => {
+	const variable = "IMPORT.meta.env.VITE_TITLE";
 	return (
 		<>
 			<ul>
@@ -46,7 +47,10 @@ const Commands = () => {
 				<li>
 					<pre>
 						{`-`} Environment Variables:{" "}
-						<code>VITE_URL=http://localhost/3000</code>
+						<code>VITE_TITLE=Vite + React</code>
+					</pre>
+					<pre>
+						{`-`} Environment Variables: <code>{variable}</code>
 					</pre>
 				</li>
 				<li>
