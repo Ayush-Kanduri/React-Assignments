@@ -1,0 +1,101 @@
+* {
+	margin: 0;
+	padding: 0;
+	box-sizing: border-box;
+}
+.red {
+	background-color: red;
+}
+.blue {
+	background-color: blue;
+}
+.green {
+	background-color: green;
+}
+.demo {
+	display: flex;
+	justify-content: space-evenly;
+	align-items: center;
+	flex-wrap: wrap;
+	text-align: center;
+	min-height: 100vh;
+	min-width: 100vw;
+	gap: 3rem;
+	padding: 3rem;
+	overflow: hidden;
+	&.attr {
+		background-color: aqua;
+		@media (500px <= width <= 800px) or (200px <= height <= 450px) {
+			background-color: greenyellow;
+		}
+	}
+	.circle {
+		border: 5px solid white;
+		width: 100px;
+		height: 100px;
+		border-radius: 50%;
+	}
+	.parallelogram {
+		border: 5px solid white;
+		width: 100px;
+		height: 100px;
+		transform: skew(20deg);
+	}
+	.square {
+		border: 5px solid white;
+		width: 100px;
+		height: 100px;
+	}
+}
+div > div {
+	&:hover {
+		background-color: white;
+	}
+	position: relative;
+}
+
+div {
+	> div::after {
+		position: absolute;
+		top: 50%;
+		left: 50%;
+		translate: -50% -50%;
+		content: "X";
+		background-color: transparent;
+		color: white;
+		font-weight: bolder;
+		font-size: 2.5rem;
+		-webkit-text-stroke: 0.03rem black;
+	}
+	> main {
+		width: 100px;
+		height: 50px;
+		background-color: white;
+		border-radius: 5px;
+		text-align: center;
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		font-weight: bolder;
+		+ p::before {
+			content: "+";
+		}
+		~ span::before {
+			content: "~";
+		}
+		+ p,
+		~ span {
+			background-color: transparent;
+			color: black;
+			font-weight: bolder;
+			font-size: 1.1rem;
+			background-color: coral;
+		}
+	}
+	> p,
+	span {
+		font-weight: bolder;
+		padding: 5px;
+		border-radius: 5px;
+	}
+}
