@@ -3,9 +3,18 @@
 }
 
 .App-logo {
-	height: 40vmin;
-	pointer-events: none;
+	height: 45vmin;
+	width: 45vmin;
+	/* pointer-events: none; */
+	cursor: pointer;
 	margin-top: 1.5rem;
+	transition: all 0.12s ease-in-out;
+	border-radius: 100%;
+	&:hover {
+		box-shadow: 0 0 1rem 1rem #61dafb91;
+		transition: all 0.12s ease-in-out;
+		background-color: #61dafb91;
+	}
 }
 
 @media (prefers-reduced-motion: no-preference) {
@@ -19,17 +28,15 @@
 	min-height: 100vh;
 	display: flex;
 	flex-direction: column;
+	flex-wrap: wrap;
 	align-items: center;
 	justify-content: center;
 	font-size: calc(10px + 2vmin);
 	color: white;
+	overflow: hidden;
 	> h1 {
 		margin-bottom: 0.5rem;
 	}
-}
-.App-header::-webkit-scrollbar {
-	display: none;
-	overflow: hidden;
 }
 
 .App-link {
@@ -43,7 +50,7 @@
 
 ul {
 	display: flex;
-	justify-content: space-between;
+	justify-content: center;
 	align-items: stretch;
 	flex-wrap: wrap;
 	gap: 2rem;
