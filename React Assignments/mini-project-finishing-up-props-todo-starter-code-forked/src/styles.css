@@ -1,0 +1,28 @@
+.App {
+  font-family: sans-serif;
+  text-align: center;
+}
+
+.todo-item:hover {
+  background-color: lavenderblush;
+}
+
+.todo-item {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 10px;
+  font-size: 20px;
+  width: 95%;
+  border-bottom: 1px solid violet;
+}
+
+.todo-list {
+  margin: 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  border: 2px solid lightcyan;
+  box-shadow: 5px;
+}
