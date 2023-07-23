@@ -3,7 +3,12 @@ import "./App.css";
 import Hooks from "./components/Hooks";
 
 function App() {
-	const hooks = ["useState()", "useEffect()", "useTransition()"];
+	const hooks = [
+		"useState()",
+		"useEffect()",
+		"useTransition()",
+		"useCustomHook()",
+	];
 	const [hook, setHook] = useState("");
 	return (
 		<div className={hook === "" ? `app` : `hook-screen`}>
