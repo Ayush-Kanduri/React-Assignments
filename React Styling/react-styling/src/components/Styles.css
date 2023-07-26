@@ -1,0 +1,29 @@
+.styles {
+	width: 100%;
+	height: 100%;
+	display: flex;
+	flex-direction: column;
+	justify-content: flex-start;
+	align-items: center;
+	text-align: center;
+	overflow-y: scroll;
+	overflow-x: hidden;
+	.heading {
+		text-shadow: 0 0 0.5rem var(--color-scheme1);
+		margin: 2rem auto;
+		border-radius: 10px;
+		padding: 10px 15px;
+		text-transform: capitalize;
+	}
+	.styleScreen {
+		padding: 15px;
+		margin-top: auto;
+		margin-bottom: auto;
+		display: flex;
+		flex-direction: column;
+		justify-content: center;
+		align-items: center;
+		gap: 2rem;
+		position: relative;
+	}
+}

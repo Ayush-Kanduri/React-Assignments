@@ -1,0 +1,9 @@
+.app {
+	height: 99vh;
+	min-height: 99vh;
+	display: flex;
+	flex-wrap: wrap;
+	gap: 2rem;
+	justify-content: center;
+	align-items: center;
+}

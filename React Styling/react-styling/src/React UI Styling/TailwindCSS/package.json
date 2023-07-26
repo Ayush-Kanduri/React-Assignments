@@ -1,0 +1,7 @@
+{
+	"scripts": {
+		"watch:tailwind": "tailwindcss build -i src/index.css -o dist/index.css --watch",
+		"build:tailwind": "tailwindcss build -i src/index.css -o dist/index.css",
+		"build:tailwind:prod": "tailwindcss build -i src/index.css -o dist/index.css --minify"
+	}
+}
