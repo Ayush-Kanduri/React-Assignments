@@ -1,5 +1,5 @@
 import { useState } from "react";
-import "../../tailwind.css";
+// import "../../tailwind.css";
 
 // Normal CSS ✔️
 // CSS Variables ✔️

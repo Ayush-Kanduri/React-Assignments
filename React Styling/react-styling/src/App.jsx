@@ -42,13 +42,7 @@ const Layout = () => {
 			"tailwind CSS",
 			"styled components",
 		],
-		components: [
-			"material UI",
-			"tailwind UI",
-			"shadCN UI",
-			"radix UI",
-			"bootstrap UI",
-		],
+		components: ["material UI", "shadCN UI", "radix UI", "bootstrap UI"],
 	};
 	const [page, setPage] = useState("");
 	return (
