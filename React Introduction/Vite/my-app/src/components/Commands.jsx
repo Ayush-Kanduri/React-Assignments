@@ -50,7 +50,7 @@ const Commands = () => {
 						<code>VITE_TITLE=Vite + React</code>
 					</pre>
 					<pre>
-						{`-`} Environment Variables: <code>{variable}</code>
+						{`-`} Environment Variables: <code>{import.meta.env.VITE_TITLE}</code>
 					</pre>
 				</li>
 				<li>
