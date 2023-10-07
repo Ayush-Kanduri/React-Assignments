@@ -1,6 +1,5 @@
 import UICard from "@/components/UICard";
 import useSWR from "swr";
-import Error from "@/components/Error";
 
 const fetcher = (...args) => fetch(...args).then((res) => res.json());
 
@@ -10,7 +9,7 @@ const Strategy2 = () => {
 		fetcher,
 		{ suspense: true }
 	);
-	if (error) return <Error />;
+	if (error) throw error;
 	return (
 		<>
 			{data.map((item, index) => (

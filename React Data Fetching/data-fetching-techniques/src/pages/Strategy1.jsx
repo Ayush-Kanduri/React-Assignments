@@ -1,22 +1,23 @@
 import UICard from "@/components/UICard";
 import { useEffect, useState } from "react";
 import Loader from "@/components/Loader";
-import Error from "@/components/Error";
 
 const Strategy1 = () => {
 	const [state, setState] = useState([]);
 	const [loading, setLoading] = useState(true);
 	useEffect(() => {
-		fetch(`https://jsonplaceholder.typicode.com/posts`)
-			.then((res) => res.json())
-			.then((data) => {
+		const fetcher = async (...args) => {
+			try {
+				const res = await fetch(...args);
+				const data = await res.json();
 				setState(data);
 				setLoading(false);
-			})
-			.catch((err) => {
-				setState(["ERROR"]);
+			} catch (err) {
 				setLoading(false);
-			});
+				console.error(err);
+			}
+		};
+		fetcher(`https://jsonplaceholder.typicode.com/posts`);
 	}, []);
 	return (
 		<>
@@ -30,7 +31,6 @@ const Strategy1 = () => {
 					/>
 				))}
 			{loading && <Loader />}
-			{state[0] === "ERROR" && <Error />}
 		</>
 	);
 };
