@@ -1,12 +1,12 @@
 # Features
 
-- Data Fetching
+-   Data Fetching
 
-useEffect()
-SWR
+1. useEffect()
+2. SWR
 
-- Error Handling
+-   Error Handling
 
-Custom Error Boundary
-React Error Boundary
-Suspense
+1. Custom Error Boundary
+2. React Error Boundary
+3. Suspense
