@@ -6,6 +6,7 @@ import ErrorBoundary from "@/components/ErrorBoundary";
 import Error from "@/components/Error";
 import { ErrorBoundary as ReactErrorBoundary } from "react-error-boundary";
 import Strategy3 from "@/pages/Strategy3";
+import Strategy4 from "@/pages/Strategy4";
 
 const Content = ({ id }) => {
 	return (
@@ -31,6 +32,14 @@ const Content = ({ id }) => {
 					<ErrorBoundary fallback={<Error />}>
 						<Strategy3 />
 					</ErrorBoundary>
+				) : id === "React Query" ? (
+					<ReactErrorBoundary
+						FallbackComponent={Error}
+						onError={(error) => console.log(error)}
+						onReset={() => window.location.reload()}
+					>
+						<Strategy4 />
+					</ReactErrorBoundary>
 				) : null}
 			</div>
 		</Suspense>
