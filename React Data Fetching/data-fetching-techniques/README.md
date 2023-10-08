@@ -2,12 +2,16 @@
 
 -   Data Fetching & Abort Controller
 
-1. useEffect()
-2. SWR
-3. use()
+    -   useEffect() - useFetch Custom Hook
+    -   SWR
+    -   React Query
 
 -   Error Handling
 
-1. Custom Error Boundary
-2. React Error Boundary
-3. Suspense
+    -   Custom Error Boundary
+    -   React Error Boundary
+    -   Suspense
+
+-   Code Splitting
+
+    -   Lazy Loading - Suspense

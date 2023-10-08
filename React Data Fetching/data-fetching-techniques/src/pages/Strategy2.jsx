@@ -12,7 +12,7 @@ const Strategy2 = () => {
 	if (error) throw error;
 	return (
 		<>
-			{data.map((item, index) => (
+			{data?.map((item, index) => (
 				<UICard
 					key={index}
 					id={item.id}

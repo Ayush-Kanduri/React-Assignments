@@ -11,4 +11,4 @@ const Data = () => {
 	);
 };
 
-export default Data;
+export { Data };
