@@ -33,8 +33,8 @@ const useFetch = (url) => {
 				const Data = await Res.json();
 				setData(Data);
 			} catch (err) {
-				setError(err);
 				setData(null);
+				setError(err);
 			} finally {
 				setLoading(false);
 			}

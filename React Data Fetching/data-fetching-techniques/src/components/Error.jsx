@@ -9,7 +9,9 @@ const Error = ({ error, resetErrorBoundary, text = "Something went wrong!" }) =>
 					<LuAlertTriangle className="text-red-500 text-4xl" />
 					{text}
 				</h1>
-				<p className="text-center text-gray-500 text-xl">{error?.message}</p>
+				<p data-testid="para" className="text-center text-gray-500 text-xl">
+					{error?.message}
+				</p>
 			</div>
 			<Button
 				size="lg"
