@@ -1,7 +1,6 @@
 import UICard from "@/components/UICard";
 import useSWR from "swr";
-
-const fetcher = (...args) => fetch(...args).then((res) => res.json());
+import fetcher from "@/utils/Fetcher";
 
 const Strategy2 = () => {
 	const { data, error } = useSWR(

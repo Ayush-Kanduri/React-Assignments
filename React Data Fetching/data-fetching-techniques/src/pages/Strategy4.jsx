@@ -1,12 +1,10 @@
 import UICard from "@/components/UICard";
 import { useQuery } from "react-query";
-
-const fetcher = (...args) => fetch(...args).then((res) => res.json());
+import fetchData from "@/utils/Axios";
 
 const Strategy4 = () => {
-	const { data, error, isLoading } = useQuery("posts", () => {
-		return fetcher("https://jsonplaceholder.typicode.com/posts");
-	});
+	const key = "posts";
+	const { data, error, isLoading } = useQuery(key, () => fetchData(key));
 	if (error) throw error;
 	return (
 		<>

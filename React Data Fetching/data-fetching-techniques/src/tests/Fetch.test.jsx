@@ -1,4 +1,4 @@
-import { describe, it, expect, vi, afterEach } from "vitest";
+import { describe, it, expect, vi, afterEach, test } from "vitest";
 import { render, screen, act, waitFor, renderHook } from "@testing-library/react";
 import "@testing-library/jest-dom";
 import useFetch from "@/hooks/useFetch";
@@ -7,6 +7,9 @@ import { useQuery } from "react-query";
 import Strategy2 from "@/pages/Strategy2";
 import Strategy3 from "@/pages/Strategy3";
 import Strategy4 from "@/pages/Strategy4";
+import Loader from "@/components/Loader";
+import fetcher from "@/utils/Fetcher";
+import fetchData from "@/utils/Axios";
 
 const responseData = { message: "Data fetched successfully" };
 const error = new Error("Failed to fetch");
@@ -85,6 +88,42 @@ describe("Fetching the Data using useFetch()", () => {
 			expect(screen.getByTestId("post")).toBeInTheDocument();
 		}, 5000);
 	});
+
+	it("should throw an error on refetch", async () => {
+		globalThis.fetch = vi.fn();
+		globalThis.fetch.mockResolvedValueOnce({
+			json: async () => responseData,
+		});
+		globalThis.fetch.mockRejectedValueOnce(error);
+
+		const { result } = renderHook(() => useFetch(url));
+		await waitFor(() => {
+			expect(fetch).toHaveBeenCalledTimes(1);
+			expect(result?.current?.data).toEqual(responseData);
+		});
+		expect(result.current.loading).toBe(false);
+		expect(result.current.error).toBe(null);
+
+		act(() => {
+			//State updates inside act()
+			result.current.refetch();
+		});
+
+		expect(result.current.loading).toBe(true);
+		expect(result.current.data).toBe(null);
+		expect(result.current.error).toBe(null);
+
+		await waitFor(() => {
+			expect(fetch).toHaveBeenCalledTimes(2);
+			expect(result?.current?.error).toEqual(error);
+		});
+		expect(result.current.loading).toBe(false);
+		expect(result.current.data).toBe(null);
+
+		setTimeout(() => {
+			expect(screen.getByTestId("post")).toBeInTheDocument();
+		}, 5000);
+	});
 });
 
 describe("Fetching the Data using SWR", () => {
@@ -122,32 +161,75 @@ describe("Fetching the Data using React Query", () => {
 		vi.clearAllMocks();
 	});
 	it("should fetch the data successfully", async () => {
-		useQuery.mockReturnValue({
-			data: [{ message: "Data fetched successfully" }],
-			error: null,
-			isLoading: false,
+		useQuery.mockImplementation((key, predicate) => {
+			expect(key).toBe("posts");
+			expect(predicate).toBeInstanceOf(Function);
+			return {
+				data: [{ message: "Data fetched successfully" }],
+				error: null,
+				isLoading: false,
+			};
 		});
-		// const { result } = renderHook(() => useQuery(url, { suspense: true }));
 		render(<Strategy4 />);
 		await waitFor(() => {
 			expect(screen.getByTestId("post")).toBeInTheDocument();
 		});
-		expect(useQuery).toHaveBeenCalledOnce();
+		expect(useQuery).toHaveBeenCalledWith("posts", expect.any(Function));
 	});
 	it("should throw an error", async () => {
-		useQuery.mockImplementation(() => {
-			throw new Error("Failed to fetch");
+		useQuery.mockReturnValue({
+			data: null,
+			error: new Error("Failed to fetch"),
+			isLoading: false,
 		});
 		expect(() => Strategy4()).toThrowError(Error);
-		expect(useQuery).toThrowError(Error);
+		expect(useQuery).toHaveBeenCalledWith("posts", expect.any(Function));
 	});
 });
 
 describe("Error Boundary", () => {
-	afterEach(() => {
-		vi.clearAllMocks();
+	it("should throw an error", () => {
+		const errorSpy = vi.spyOn(console, "error");
+		errorSpy.mockImplementation(() => {});
+		const expectedError = new Error(
+			"This is a custom error handled by ErrorBoundary!"
+		);
+		expect(() => {
+			render(<Strategy3 />);
+		}).toThrowError(expectedError);
+		errorSpy.mockRestore();
+	});
+});
+
+describe("should render the loading screen", () => {
+	it("should render the loading screen", () => {
+		render(<Loader />);
+		expect(screen.getByText(/loading\.\.\./i)).toBeInTheDocument();
+	});
+});
+
+test("fetcher should return data from a JSON response", async () => {
+	const mockResponseData = { message: "Data fetched successfully" };
+	const mockFetch = vi.fn().mockResolvedValue({
+		json: vi.fn().mockResolvedValue(mockResponseData),
+	});
+	globalThis.fetch = mockFetch;
+
+	const url = "https://jsonplaceholder.typicode.com/posts";
+	const response = await fetcher(url);
+
+	expect(response).toEqual(mockResponseData);
+	expect(mockFetch).toHaveBeenCalledWith(url);
+
+	globalThis.fetch.mockRestore();
+});
+
+describe("axios should return data from a JSON response", () => {
+	it("should fetch data successfully", async () => {
+		const data = await fetchData();
+		expect(data.length).toBeGreaterThan(0);
 	});
 	it("should throw an error", async () => {
-		expect(() => Strategy3()).toThrowError(Error);
+		await expect(fetchData("/invalid-url")).rejects.toThrow();
 	});
 });
