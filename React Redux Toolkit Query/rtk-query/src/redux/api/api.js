@@ -3,7 +3,7 @@ import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 export const Api = createApi({
 	reducerPath: "api",
 	baseQuery: fetchBaseQuery({
-		baseUrl: "https://jsonplaceholder.typicode.com/",
+		baseUrl: "http://localhost:3000/",
 	}),
 	tagTypes: ["Post"],
 	endpoints: (builder) => ({
@@ -13,7 +13,7 @@ export const Api = createApi({
 		}),
 		createPost: builder.mutation({
 			query: (post) => ({
-				url: "create-post",
+				url: "posts",
 				method: "POST",
 				body: post,
 			}),
@@ -22,7 +22,7 @@ export const Api = createApi({
 		updatePost: builder.mutation({
 			query: ({ id, title }) => ({
 				url: `posts/${id}`,
-				method: "PUT",
+				method: "PATCH",
 				body: { title },
 			}),
 			invalidatesTags: ["Post"],

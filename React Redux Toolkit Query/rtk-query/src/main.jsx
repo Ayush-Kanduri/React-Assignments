@@ -1,5 +1,23 @@
 import ReactDOM from "react-dom/client";
-import App from "./App.jsx";
-import "./index.css";
+import { Provider } from "react-redux";
+import RTKQRR from "@/RTKQRR";
+import { Store } from "@/redux/store/store";
+import { ApiProvider } from "@reduxjs/toolkit/dist/query/react";
+import RTKQ from "@/RTKQ";
+import { Api } from "@/redux/api/api.js";
 
-ReactDOM.createRoot(document.getElementById("root")).render(<App />);
+// This implements Redux Toolkit Query without React-Redux
+
+ReactDOM.createRoot(document.getElementById("root")).render(
+	<ApiProvider api={Api}>
+		<RTKQ />
+	</ApiProvider>
+);
+
+// This implements Redux Toolkit Query with React-Redux
+
+// ReactDOM.createRoot(document.getElementById("root")).render(
+// 	<Provider store={Store}>
+// 		<RTKQRR />
+// 	</Provider>
+// );

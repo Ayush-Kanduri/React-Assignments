@@ -1,0 +1,22 @@
+* {
+	margin: 0;
+	padding: 0;
+	box-sizing: border-box;
+	-moz-user-select: none;
+	-webkit-user-select: none;
+	user-select: none;
+	-webkit-user-drag: none;
+	scroll-behavior: smooth;
+	overflow-wrap: break-word;
+}
+
+.app {
+	width: 100vw;
+	height: 100vh;
+	padding: 10px;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+	margin: auto;
+}
