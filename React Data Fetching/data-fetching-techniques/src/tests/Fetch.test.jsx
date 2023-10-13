@@ -10,12 +10,21 @@ import Strategy4 from "@/pages/Strategy4";
 import Loader from "@/components/Loader";
 import fetcher from "@/utils/Fetcher";
 import fetchData from "@/utils/Axios";
+import Strategy5 from "@/pages/Strategy5";
+import { useGetPostsQuery } from "@/redux/api/api";
 
 const responseData = { message: "Data fetched successfully" };
 const error = new Error("Failed to fetch");
 let url = "https://jsonplaceholder.typicode.com/posts";
 vi.mock("swr");
 vi.mock("react-query");
+vi.mock("@/redux/api/api", async () => {
+	const actual = await vi.importActual("@/redux/api/api");
+	return {
+		...actual,
+		useGetPostsQuery: vi.fn(),
+	};
+});
 
 describe("Fetching the Data using useFetch()", () => {
 	afterEach(() => {
@@ -38,6 +47,17 @@ describe("Fetching the Data using useFetch()", () => {
 		setTimeout(() => {
 			expect(screen.getByTestId("post")).toBeInTheDocument();
 		}, 5000);
+	});
+
+	it("should render the component with loading state", async () => {
+		globalThis.fetch = vi.fn();
+		globalThis.fetch.mockResolvedValueOnce({
+			json: async () => null,
+		});
+		const { result } = renderHook(() => useFetch(url));
+		expect(result.current.loading).toBe(true);
+		expect(result.current.data).toBe(null);
+		expect(result.current.error).toBe(null);
 	});
 
 	it("should throw an error", async () => {
@@ -144,6 +164,21 @@ describe("Fetching the Data using SWR", () => {
 			suspense: true,
 		});
 	});
+	it("should render the component with loading state", async () => {
+		useSWR.mockReturnValue({
+			data: null,
+			error: null,
+			isLoading: true,
+		});
+		// const { result } = renderHook(() => useSWR(url, { suspense: true }));
+		render(<Strategy2 />);
+		await waitFor(() => {
+			expect(screen.getByText(/loading\.\.\./i)).toBeInTheDocument();
+		});
+		expect(useSWR).toHaveBeenCalledWith(url, expect.any(Function), {
+			suspense: true,
+		});
+	});
 	it("should throw an error", async () => {
 		useSWR.mockReturnValue({
 			data: null,
@@ -176,6 +211,22 @@ describe("Fetching the Data using React Query", () => {
 		});
 		expect(useQuery).toHaveBeenCalledWith("posts", expect.any(Function));
 	});
+	it("should render the component with loading state", async () => {
+		useQuery.mockImplementation((key, predicate) => {
+			expect(key).toBe("posts");
+			expect(predicate).toBeInstanceOf(Function);
+			return {
+				data: null,
+				error: null,
+				isLoading: true,
+			};
+		});
+		render(<Strategy4 />);
+		await waitFor(() => {
+			expect(screen.getByText(/loading\.\.\./i)).toBeInTheDocument();
+		});
+		expect(useQuery).toHaveBeenCalledWith("posts", expect.any(Function));
+	});
 	it("should throw an error", async () => {
 		useQuery.mockReturnValue({
 			data: null,
@@ -184,6 +235,60 @@ describe("Fetching the Data using React Query", () => {
 		});
 		expect(() => Strategy4()).toThrowError(Error);
 		expect(useQuery).toHaveBeenCalledWith("posts", expect.any(Function));
+	});
+});
+
+describe("Fetching the Data using React Toolkit Query", () => {
+	afterEach(() => {
+		vi.clearAllMocks();
+	});
+	it("should fetch the data successfully", async () => {
+		const responseData = [
+			{ id: 1, title: "Title 1", body: "Body 1" },
+			{ id: 2, title: "Title 2", body: "Body 2" },
+			{ id: 3, title: "Title 3", body: "Body 3" },
+		];
+		useGetPostsQuery.mockReturnValue({
+			data: responseData,
+			isLoading: false,
+			isError: false,
+			isSuccess: true,
+			isFetching: false,
+			error: null,
+		});
+		render(<Strategy5 />);
+		await waitFor(() => {
+			expect(screen.getAllByTestId("post").length).toBeGreaterThan(0);
+		});
+		expect(useGetPostsQuery).toHaveBeenCalled();
+	});
+	it("should render the component with loading state", async () => {
+		useGetPostsQuery.mockReturnValue({
+			data: null,
+			isLoading: true,
+			isError: false,
+			isSuccess: false,
+			isFetching: false,
+			error: null,
+		});
+		render(<Strategy5 />);
+		await waitFor(() => {
+			expect(screen.getByText(/loading\.\.\./i)).toBeInTheDocument();
+		});
+	});
+	it("should throw an error if there is an error", async () => {
+		const errorSpy = vi.spyOn(console, "error");
+		errorSpy.mockImplementation(() => {});
+		useGetPostsQuery.mockReturnValue({
+			data: null,
+			isLoading: false,
+			isError: true,
+			isSuccess: false,
+			isFetching: false,
+			error: error,
+		});
+		expect(() => render(<Strategy5 />)).toThrowError(error);
+		errorSpy.mockRestore();
 	});
 });
 

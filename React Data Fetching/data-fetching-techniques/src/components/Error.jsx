@@ -10,7 +10,7 @@ const Error = ({ error, resetErrorBoundary, text = "Something went wrong!" }) =>
 					{text}
 				</h1>
 				<p data-testid="para" className="text-center text-gray-500 text-xl">
-					{error?.message}
+					{error?.message || error?.error}
 				</p>
 			</div>
 			<Button

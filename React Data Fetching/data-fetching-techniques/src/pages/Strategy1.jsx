@@ -11,7 +11,7 @@ const Strategy1 = () => {
 		error,
 		refetch,
 	} = useFetch(`https://jsonplaceholder.typicode.com/posts`);
-	if (error) throw new Error(error);
+	if (error) throw error;
 	if (loading) return <Loader />;
 	return (
 		<>
