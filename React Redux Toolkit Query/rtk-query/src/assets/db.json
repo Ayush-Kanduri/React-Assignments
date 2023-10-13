@@ -113,6 +113,12 @@
       "id": 19,
       "title": "Art in the Digital Age",
       "body": "Art in the digital age encompasses a wide range of creative expression using digital tools, from digital painting and photography to interactive installations."
+    },
+    {
+      "id": 20,
+      "userId": 72,
+      "title": "Online Banking",
+      "body": "Sustainable living emphasizes reducing personal, societal, and environmental stress through actions such as conserving energy and natural resources."
     }
   ]
 }

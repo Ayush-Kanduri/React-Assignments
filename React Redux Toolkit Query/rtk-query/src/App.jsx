@@ -6,7 +6,7 @@ import {
 } from "@/redux/api/api";
 import { useEffect, useState } from "react";
 
-const RTKQ = () => {
+const App = ({ text }) => {
 	const [CRUD, setCRUD] = useState("");
 	const [posts, setPosts] = useState([]);
 	const { data, error, isError, isLoading, refetch } = useGetPostsQuery("");
@@ -17,7 +17,7 @@ const RTKQ = () => {
 	if (isLoading) return <Loading />;
 	return (
 		<div className="app">
-			{CRUD === "" && <Home setCRUD={setCRUD} />}
+			{CRUD === "" && <Home setCRUD={setCRUD} text={text} />}
 			{CRUD === "create" && (
 				<Create setCRUD={setCRUD} length={posts?.length} />
 			)}
@@ -30,7 +30,7 @@ const RTKQ = () => {
 	);
 };
 
-export default RTKQ;
+export default App;
 
 const styles = {
 	form: {
@@ -62,16 +62,16 @@ const Error = ({ error }) => {
 
 const Loading = () => {
 	return (
-		<div style={styles.form}>
+		<div style={{ ...styles.form, background: "white", color: "black" }}>
 			<h1>Loading...</h1>
 		</div>
 	);
 };
 
-const Home = ({ setCRUD }) => {
+const Home = ({ setCRUD, text }) => {
 	return (
 		<div>
-			<h1>Redux Toolkit Query (Without React-Redux)</h1>
+			<h1>{text}</h1>
 			<h2>CRUD Operations</h2>
 			<button onClick={() => setCRUD("create")}>Create</button>
 			<button onClick={() => setCRUD("read")}>Read</button>
@@ -82,7 +82,7 @@ const Home = ({ setCRUD }) => {
 };
 
 const Create = ({ setCRUD, length }) => {
-	const [createPost] = useCreatePostMutation("");
+	const [createPost, { isLoading }] = useCreatePostMutation("");
 	const [title, setTitle] = useState("");
 	const [body, setBody] = useState("");
 	const submitHandler = (e) => {
@@ -99,30 +99,35 @@ const Create = ({ setCRUD, length }) => {
 	};
 	return (
 		<form onSubmit={submitHandler} style={styles.form}>
-			<button onClick={() => setCRUD("")}>GO BACK</button>
-			<h1>CREATE POST</h1>
-			<input
-				type="text"
-				name="title"
-				placeholder="Title"
-				value={title}
-				onChange={(e) => setTitle(e.target.value)}
-				style={styles.size}
-				required
-			/>
-			<textarea
-				name="body"
-				cols="30"
-				rows="10"
-				placeholder="Body..."
-				value={body}
-				onChange={(e) => setBody(e.target.value)}
-				style={styles.size}
-				required
-			/>
-			<button type="submit" style={styles.size}>
-				CREATE
-			</button>
+			{isLoading && <Loading />}
+			{!isLoading && (
+				<>
+					<button onClick={() => setCRUD("")}>GO BACK</button>
+					<h1>CREATE POST</h1>
+					<input
+						type="text"
+						name="title"
+						placeholder="Title"
+						value={title}
+						onChange={(e) => setTitle(e.target.value)}
+						style={styles.size}
+						required
+					/>
+					<textarea
+						name="body"
+						cols="30"
+						rows="10"
+						placeholder="Body..."
+						value={body}
+						onChange={(e) => setBody(e.target.value)}
+						style={styles.size}
+						required
+					/>
+					<button type="submit" style={styles.size}>
+						CREATE
+					</button>
+				</>
+			)}
 		</form>
 	);
 };
@@ -148,7 +153,7 @@ const Read = ({ setCRUD, refetch, posts }) => {
 const Update = ({ setCRUD }) => {
 	const [updatePost] = useUpdatePostMutation("");
 	const [title, setTitle] = useState("");
-	const [id, setId] = useState(null);
+	const [id, setId] = useState("");
 	const submitHandler = (e) => {
 		e.preventDefault();
 		e.stopPropagation();
@@ -191,7 +196,7 @@ const Update = ({ setCRUD }) => {
 
 const Delete = ({ setCRUD }) => {
 	const [deletePost] = useDeletePostMutation("");
-	const [id, setId] = useState(null);
+	const [id, setId] = useState("");
 	const submitHandler = (e) => {
 		e.preventDefault();
 		e.stopPropagation();
